@@ -1,8 +1,9 @@
 from django.contrib.auth.models import Group, User
-from tasks.models import Task
 from rest_framework import permissions, viewsets
 
-from tasks.serializers import GroupSerializer, UserSerializer, TaskSerializer
+from tasks.models import Task
+from tasks.serializers import GroupSerializer, TaskSerializer, UserSerializer
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Task(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -8,5 +9,6 @@ class Task(models.Model):
     owner = models.ForeignKey(
         "auth.User", related_name="tasks", on_delete=models.CASCADE
     )
+
     class Meta:
         ordering = ["created"]
