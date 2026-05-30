@@ -9,8 +9,10 @@ router.register(r"users", UserViewSet)
 router.register(r"groups", GroupViewSet)
 router.register(r"tasks", TaskViewSet)
 
+
 def health(request):
     return JsonResponse({"status": "ok"})
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
