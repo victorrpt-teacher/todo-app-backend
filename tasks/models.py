@@ -1,6 +1,7 @@
 from django.db import models
 from django_prometheus.models import ExportModelOperationsMixin
 
+
 # Create your models here.
 class Task(ExportModelOperationsMixin('tasks'), models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -9,5 +10,6 @@ class Task(ExportModelOperationsMixin('tasks'), models.Model):
     owner = models.ForeignKey(
         "auth.User", related_name="tasks", on_delete=models.CASCADE
     )
+
     class Meta:
         ordering = ["created"]

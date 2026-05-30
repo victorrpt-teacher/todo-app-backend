@@ -10,6 +10,9 @@ dependencies = [
     "django-environ>=0.13.0",
     "django-prometheus>=2.4.0",
     "djangorestframework>=3.17.1",
+    "flake8>=7.3.0",
+    "isort>=8.0.1",
     "psycopg[binary]>=3.0.0",
+    "pylint>=4.0.5",
     "requests>=2.34.2",
 ]
