@@ -1,6 +1,7 @@
 
 import os
 from pathlib import Path
+
 import environ
 
 env = environ.Env()
@@ -8,12 +9,12 @@ environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^op=^0e()1))3@2e4m%@4*l5g&o*k42$5gpob5$7-715245&0!')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,api').split(',')
 
 
 # Application definition
@@ -28,9 +29,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'tasks',
     "corsheaders",
+    'django_prometheus'
 ]
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -39,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -66,7 +70,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django_prometheus.db.backends.postgresql",
         "NAME": os.getenv('DB_NAME', 'tasks'),
         "USER": os.getenv('DB_USER', 'postgres'),
         "PASSWORD": os.getenv('DB_PASSWORD', 'postgres'),
@@ -81,7 +85,7 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', # noqa
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
@@ -119,4 +123,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:9000",
+    "http://api:8000",
 ]
+
+
+PROMETHEUS_LATENCY_BUCKETS = (
+    0.01,   # 10 ms
+    0.025,  # 25 ms
+    0.05,   # 50 ms
+    0.075,  # 75 ms
+    0.1,    # 100 ms
+    0.25,   # 250 ms
+    0.5,    # 500 ms
+    0.75,   # 750 ms
+    1.0,    # 1 segundo
+    2.5,
+    5.0,
+    7.5,
+    10.0,
+    25.0,
+    50.0,
+    75.0,
+    float('inf'),
+)

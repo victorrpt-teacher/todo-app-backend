@@ -15,6 +15,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - red-infra
   api:
     build:
       context: .
@@ -32,6 +34,13 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
+    networks:
+      - red-infra
 
 volumes:
   postgres_data:
+
+networks:
+  red-infra:
+    name: red-compartida-global
+    external: true
