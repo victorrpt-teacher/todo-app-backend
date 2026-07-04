@@ -13,12 +13,30 @@ services:
       - red-monitoreo
     ports:
       - 3100:3100
+  alloy:
+    image: grafana/alloy:latest
+    networks:
+      - red-monitoreo
+    volumes:
+      - ./config.alloy:/etc/alloy/config.alloy
+      - alloy_data:/var/lib/alloy/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 12345:12345
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
+      - /etc/alloy/config.alloy
   grafana:
     image: grafana/grafana:latest
     networks:
       - red-monitoreo
     ports:
       - 3000:3000
+
+volumes:
+  alloy_data:
 
 networks:
   red-monitoreo:
