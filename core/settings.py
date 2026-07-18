@@ -1,20 +1,16 @@
 
 import os
 from pathlib import Path
-
-import environ
-
-env = environ.Env()
-environ.Env.read_env()
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,api').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,api,front').split(',')
 
 
 # Application definition
@@ -28,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'tasks',
+    "diario",
     "corsheaders",
     'django_prometheus'
 ]
@@ -71,11 +68,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django_prometheus.db.backends.postgresql",
-        "NAME": os.getenv('DB_NAME', 'tasks'),
-        "USER": os.getenv('DB_USER', 'postgres'),
-        "PASSWORD": os.getenv('DB_PASSWORD', 'postgres'),
-        "HOST": os.getenv('DB_HOST', 'db'),
-        "PORT": os.getenv('DB_PORT', '5432'),
+        "NAME": os.getenv('DB_NAME', 'test'),
+        "USER": os.getenv('DB_USER', 'test'),
+        "PASSWORD": os.getenv('DB_PASSWORD', 'test'),
+        "HOST": os.getenv('DB_HOST', 'test'),
+        "PORT": os.getenv('DB_PORT', 'test'),
     }
 }
 
@@ -121,8 +118,52 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "json": {
+            "()": "core.logging.JsonLogFormatter",
+        },
+    },
+    "handlers": {
+        "stdout": {
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "json",
+        },
+    },
+    "root": {
+        "handlers": ["stdout"],
+        "level": os.getenv("LOG_LEVEL", "INFO"),
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["stdout"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["stdout"],
+            "level": os.getenv("DJANGO_REQUEST_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["stdout"],
+            "level": os.getenv("DJANGO_SERVER_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+        "tasks": {
+            "handlers": ["stdout"],
+            "level": os.getenv("TASKS_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+    },
+}
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:9000",
+    "http://127.0.0.1:9000",
     "http://api:8000",
 ]
 
@@ -146,3 +187,9 @@ PROMETHEUS_LATENCY_BUCKETS = (
     75.0,
     float('inf'),
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section id="auth-view" class="auth-panel">
+      <div class="brand">
+        <span class="eyebrow">Django API</span>
+        <h1>Todo Dashboard</h1>
+        <p>Sign in with your API account to manage tasks and daily highlights.</p>
+      </div>
+
+      <form id="login-form" class="stack">
+        <label class="field" for="api-base">
+          <span>API URL</span>
+          <input id="api-base" name="api-base" type="url" value="http://localhost:8000" required />
+        </label>
+
+        <label class="field" for="username">
+          <span>Username</span>
+          <input id="username" name="username" type="text" autocomplete="username" required />
+        </label>
+
+        <label class="field" for="password">
+          <span>Password</span>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </label>
+
+        <button type="submit" class="button primary">Sign in</button>
+      </form>
+
+      <p id="auth-message" class="message" role="status"></p>
+    </section>
+
+    <section id="dashboard-view" class="dashboard hidden" aria-live="polite">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">Workspace</span>
+          <h1>Todo Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+          <span id="api-label" class="api-label"></span>
+          <button id="refresh-button" class="button subtle" type="button">Refresh</button>
+          <button id="logout-button" class="button danger" type="button">Logout</button>
+        </div>
+      </header>
+
+      <p id="app-message" class="message" role="status"></p>
+
+      <div class="content-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Tasks</h2>
+              <p>Track actionable work from the tasks API.</p>
+            </div>
+            <span id="tasks-count" class="count">0</span>
+          </div>
+
+          <form id="task-form" class="editor-form">
+            <input type="hidden" id="task-url" />
+            <label class="field" for="task-description">
+              <span>Description</span>
+              <input id="task-description" maxlength="100" required placeholder="Write a task" />
+            </label>
+            <label class="check-field" for="task-completed">
+              <input id="task-completed" type="checkbox" />
+              <span>Completed</span>
+            </label>
+            <div class="form-actions">
+              <button class="button primary" type="submit">Save task</button>
+              <button id="task-cancel" class="button subtle" type="button">Cancel</button>
+            </div>
+          </form>
+
+          <div id="tasks-list" class="item-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Diario</h2>
+              <p>Capture daily highlights from the diario API.</p>
+            </div>
+            <span id="diario-count" class="count">0</span>
+          </div>
+
+          <form id="diario-form" class="editor-form">
+            <input type="hidden" id="diario-url" />
+            <label class="field" for="diario-text">
+              <span>Day highlights</span>
+              <textarea id="diario-text" maxlength="255" required placeholder="What stood out today?"></textarea>
+            </label>
+            <label class="check-field" for="diario-highlight">
+              <input id="diario-highlight" type="checkbox" />
+              <span>Mark as highlight</span>
+            </label>
+            <div class="form-actions">
+              <button class="button primary" type="submit">Save entry</button>
+              <button id="diario-cancel" class="button subtle" type="button">Cancel</button>
+            </div>
+          </form>
+
+          <div id="diario-list" class="item-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
