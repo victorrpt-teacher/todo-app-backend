@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Daylog(models.Model):
     created = models.DateField(auto_now_add=True)
@@ -10,4 +11,4 @@ class Daylog(models.Model):
     )
 
     class Meta:
-        ordering = ["created"] 
+        ordering = ["created"]

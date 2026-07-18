@@ -2,6 +2,7 @@ from rest_framework import permissions, viewsets
 from diario.models import Daylog
 from diario.serializers import DaylogSerializer
 
+
 class DaylogViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allow users to view a list of their Daylog

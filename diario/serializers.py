@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from diario.models import Daylog
 
+
 class DaylogSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
 
