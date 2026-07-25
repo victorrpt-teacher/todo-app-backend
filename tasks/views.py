@@ -7,7 +7,7 @@ from tasks.serializers import GroupSerializer, TaskSerializer, UserSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows users to be viewed or edited.
+    API endpoint that allows users to be viewed or edited.akshdalskdhlaskdhalsjkdhalsjdhkalsjdkhlasjdkhalsjkdhalsjkdhalsjdhlasjkdhlasjkhdlasjkhd
     """
 
     queryset = User.objects.all().order_by("-date_joined")
